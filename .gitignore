@@ -1,1 +1,7 @@
 intel-env/**
+*.pdf
+*.docx
+*.PDF
+*.doc
+*.log
+
