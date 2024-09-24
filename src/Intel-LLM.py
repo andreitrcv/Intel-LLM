@@ -14,6 +14,16 @@ import time
 genai.configure(api_key=os.environ["API_KEY"])
 model = genai.GenerativeModel("gemini-1.5-flash")
 
+
+cur_path = os.path.dirname(__file__)
+
+# Assuming you launch from the root folder (where ./env/ and ./templates/ exist)
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # Go one level up from 'src'
+
+# Create paths to the files in templates/ folder
+system_prompt = os.path.join(root_path, 'templates', 'system-prompt.txt')
+queries = os.path.join(root_path, 'templates', 'queries.txt')
+
 def get_country_target():
     target = input("\
 1.  English documents\n\
@@ -29,7 +39,7 @@ def get_country_target():
 11. Hungarian documents\n\
 Choose [1-11]: ")
 
-    with open("queries.txt") as file:
+    with open(queries) as file:
         lines = [line.rstrip() for line in file]
     return lines[int(target)-1]
 
@@ -47,7 +57,7 @@ def google_search(query, number_of_docs):
     return search_results
 
 def get_system_prompt():
-    with open("system-prompt.txt", 'r') as content_file:
+    with open(system_prompt, 'r') as content_file:
         sys_prompt = content_file.read()
     return sys_prompt
 
