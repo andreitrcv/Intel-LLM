@@ -33,9 +33,17 @@ Choose [1-11]: ")
         lines = [line.rstrip() for line in file]
     return lines[int(target)-1]
 
+def get_number_of_docs():
+    number = input("How many documents you want to search for? (They will be filtered and only the most suitable ones will be downloaded): ")
+    return int(number)
 
-def google_search(query):
-    search_results = list(search(query, num_results=10, safe=None))
+def get_user_inputs():
+    target = get_country_target()
+    number = get_number_of_docs()
+    return target, number
+
+def google_search(query, number_of_docs):
+    search_results = list(search(query, num_results=number_of_docs, safe=None))
     return search_results
 
 def get_system_prompt():
@@ -65,13 +73,15 @@ def download_file(url):
     return local_filename
 
 def download_files(files, indexes):
+    print("\n")
     for index, file in enumerate(files, start=1):
         if index in indexes:
+            print(f'Downloading {file}')
             download_file(file)
 
 def main():
-    country_query = get_country_target()
-    results = google_search(country_query)
+    country_query, number_of_docs = get_user_inputs()
+    results = google_search(country_query, number_of_docs)
     indexes = filter_files(results)
     download_files(results, indexes)
 
