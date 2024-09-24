@@ -1,0 +1,2 @@
+The following is a list of files retrieved from a website. I need to filter them to identify those related to cyber threat intelligence, Advanced Persistent Threats (APT), government-backed cyber operations, cybersecurity research, cyber warfare, or military cyber activities. Please return only the indexes of the files that are most relevant based on their file names, extensions, and any other indicators. Provide only replies like "4, 9, 42, 76" in order to be easy to parse them with a script.
+

@@ -5,22 +5,51 @@
 # 5. ask LLM to filter them to get the best ones
 # prompt ChatGPT
 
-import requests
+import google.generativeai as genai
 from googlesearch import search
+import os
+import requests
+import time
 
-template = "site:*.{0} (ext:doc OR ext:docx OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:log OR ext:bak OR ext:conf OR ext:sql)"
+genai.configure(api_key=os.environ["API_KEY"])
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-def get_target():
-    target = input("Enter target: ")
-    return target
+def get_country_target():
+    target = input("\
+1.  English documents\n\
+2.  Italian documents\n\
+3.  French documents\n\
+4.  Russian documents\n\
+5.  Chinese documents\n\
+6.  German documents\n\
+7.  Arabic documents\n\
+8.  Hebrew (Israel) documents\n\
+9.  Polish documents\n\
+10. Romanian documents\n\
+11. Hungarian documents\n\
+Choose [1-11]: ")
 
-def compose_query(target):
-    final_query = template.format(target)
-    return final_query
+    with open("queries.txt") as file:
+        lines = [line.rstrip() for line in file]
+    return lines[int(target)-1]
+
 
 def google_search(query):
-    search_results = search(query, num_results=10)
+    search_results = list(search(query, num_results=10, safe=None))
     return search_results
+
+def get_system_prompt():
+    with open("system-prompt.txt", 'r') as content_file:
+        sys_prompt = content_file.read()
+    return sys_prompt
+
+def filter_files(files):
+    system_prompt = get_system_prompt()
+    final_prompt = system_prompt + "\n" + " ".join(str(file) for file in files)
+    response = model.generate_content(final_prompt)
+    indexes = [int(x.strip()) for x in response.text.split(',') if x.strip().isdigit()]
+    return indexes
+
 
 def download_file(url):
     local_filename = url.split('/')[-1]
@@ -35,17 +64,17 @@ def download_file(url):
                 f.write(chunk)
     return local_filename
 
-def download_files(files):
-    for _, file in enumerate(files, start=1):
-        download_file(file)
+def download_files(files, indexes):
+    for index, file in enumerate(files, start=1):
+        if index in indexes:
+            download_file(file)
 
 def main():
-    target = get_target()
-    final_query = compose_query(target)
-    results = google_search(final_query)
-    download_files(results)
+    country_query = get_country_target()
+    results = google_search(country_query)
+    indexes = filter_files(results)
+    download_files(results, indexes)
 
 if __name__ == "__main__":
     main()
-
 
