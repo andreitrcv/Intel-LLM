@@ -3,11 +3,11 @@
 ![Intel-LLM](https://github.com/user-attachments/assets/b324afa7-5d9a-4d6d-8938-b6015c6d1376)
 
 
-**Intel-LLM** is a Python-based automation tool which goal is to identify and download relevant files from the Internet that cover topics such as cyber threat intelligence, Advanced Persistent Threats (APT), military and government-backed operations, cybersecurity research, cyber warfare, and related topics. It uses Google's search engine and a (Large) Language Model (LLM) to filter files and find the most pertinent results based on user-defined queries.
+**Intel-LLM** is a Python tool that identifies and download relevant files from the Internet that cover topics such as cyber threat intelligence, Advanced Persistent Threats (APT), military and government-backed operations, cybersecurity research, cyber warfare, and related topics. It uses Google's search engine and a (Large) Language Model (LLM) to filter files and find the most pertinent results based on user-defined queries.
 
 - The user can specify a target language or region to search for documents using government and military domains.
 - The tool fetches search results from Google based on the query.
-- The results are filtered by an LLM, which ranks files by relevance to cyber threat intelligence and other specified topics.
+- The results are filtered and analyzed by an LLM, which ranks files by relevance to cyber threat intelligence and other specified topics.
 - The most relevant files are automatically downloaded for further analysis.
 
 ***
